@@ -3,16 +3,18 @@ pragma solidity ^0.8.15;
 
 import 'forge-std/console2.sol';
 import 'forge-std/Script.sol';
+import {Multicall2} from 'contracts/libraries/Multicall2.sol';
 import {RouterParameters} from 'contracts/base/RouterImmutables.sol';
 import {UnsupportedProtocol} from 'contracts/deploy/UnsupportedProtocol.sol';
 import {UniversalRouter} from 'contracts/UniversalRouter.sol';
 import {Permit2} from 'permit2/src/Permit2.sol';
 
-bytes32 constant SALT = bytes32(uint256(0x00000000000000000000000000000000000000005eb67581652632000a6cbedf));
+bytes32 constant SALT = bytes32(uint256(0x1234));
 
 abstract contract DeployUniversalRouter is Script {
     RouterParameters internal params;
     address internal unsupported;
+    address internal multicall2;
 
     address constant UNSUPPORTED_PROTOCOL = address(0);
     bytes32 constant BYTES32_ZERO = bytes32(0);
@@ -22,6 +24,8 @@ abstract contract DeployUniversalRouter is Script {
 
     function run() external returns (UniversalRouter router) {
         vm.startBroadcast();
+
+        multicall2 = address(new Multicall2());
 
         // deploy permit2 if it isnt yet deployed
         if (params.permit2 == address(0)) {
@@ -67,6 +71,7 @@ abstract contract DeployUniversalRouter is Script {
     }
 
     function logParams() internal view {
+        console2.log('multicall2:', multicall2);
         console2.log('permit2:', params.permit2);
         console2.log('weth9:', params.weth9);
         console2.log('seaportV1_5:', params.seaportV1_5);
