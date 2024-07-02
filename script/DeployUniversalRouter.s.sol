@@ -9,7 +9,7 @@ import {UnsupportedProtocol} from 'contracts/deploy/UnsupportedProtocol.sol';
 import {UniversalRouter} from 'contracts/UniversalRouter.sol';
 import {Permit2} from 'permit2/src/Permit2.sol';
 
-bytes32 constant SALT = bytes32(uint256(0x5555));
+bytes32 constant SALT = bytes32(uint256(0x555511111));
 
 abstract contract DeployUniversalRouter is Script {
     RouterParameters internal params;
